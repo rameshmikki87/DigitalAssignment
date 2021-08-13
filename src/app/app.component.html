@@ -1,0 +1,43 @@
+<app-loading *ngIf="loadingService.isLoading$ | async"></app-loading>
+<div class="toolbar" role="banner">
+  <span><h2>Digital Assignment</h2></span>
+  <div class="spacer"></div>
+</div>
+<div class="content" role="main">
+  <div>
+    <h2>Please select a user to find their comments:</h2>
+    <ul>
+      <li *ngFor="let user of usersList"><a [ngClass]="{'active': (activeUserName === user.name)}"
+          (click)="getPosts(user.id, user.name)">{{user.name}}</a></li>
+    </ul>
+    <div class="posts" *ngIf="activeUserName">
+      <h2>Posts from {{activeUserName}}</h2>
+      <div>
+        <div>
+          <div class="post-item" *ngFor="let post of selectedPosts">
+            <div>
+              <div class="post-conent">
+                <h3>{{post.title}}</h3>
+                <p>{{post.body}}</p>
+              </div>
+              <div class="expand-icon">
+                <a *ngIf="!(activePostID === post.id)" (click)="showComments(post.id)">+</a>
+                <a *ngIf="activePostID === post.id" (click)="hideComments()">-</a>
+              </div>
+            </div>
+            <div class="comments" *ngIf="activePostID === post.id">
+              <div class="comment-body" *ngFor="let comment of commentsList">
+                <div>{{comment.body}}</div>
+                <div class="comment-info">
+                  <div>Name : {{comment.name}}</div>
+                  <div>Email : {{comment.email}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!loadAllPostClicked" class="loadall-container"><button class="btn-loadall" (click)="loadAllPosts()">...Load All</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
